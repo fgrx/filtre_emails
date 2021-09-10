@@ -1,0 +1,19 @@
+{
+  "name": "filtre_mails",
+  "version": "1.0.0",
+  "description": "Filtrer les emails qui ont déjà acheté un produit",
+  "main": "app.js",
+  "scripts": {
+    "start": "tsc && node dist/app.js",
+    "test": "jest"
+  },
+  "author": "Fabien Grignoux",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/jest": "^27.0.1",
+    "jest": "^27.1.1",
+    "ts-jest": "^27.0.5",
+    "ts-node": "^10.2.1",
+    "typescript": "^4.4.2"
+  }
+}
