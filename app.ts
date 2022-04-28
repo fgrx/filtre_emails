@@ -1,8 +1,20 @@
 import FileManager from "./src/fileManager";
-import EmailDuplicatesFinder from "./src/emailDuplicatesFinder";
+import EmailTester from "./src/emailTester";
 
 class CSVAnalyser {
-  constructor(private folder: string) {}
+  public duplicatedEmails: Array<string>;
+  public uniquesEmails: Array<string>;
+
+  emails1: Array<string>;
+  emails2: Array<string>;
+
+  constructor(private folder: string) {
+    this.emails1 = [];
+    this.emails2 = [];
+
+    this.duplicatedEmails = [];
+    this.uniquesEmails = [];
+  }
 
   async analyse() {
     const fileManager = new FileManager();
@@ -12,16 +24,29 @@ class CSVAnalyser {
     const text1 = await fileManager.read(`${this.folder}/${files[0]}`);
     const text2 = await fileManager.read(`${this.folder}/${files[1]}`);
 
-    const emailDuplicateFinder = new EmailDuplicatesFinder();
+    const emailTester = new EmailTester();
 
-    const emails1 = emailDuplicateFinder.findEmailsInText(text1);
-    const emails2 = emailDuplicateFinder.findEmailsInText(text2);
+    this.emails1 = emailTester.findEmailsInText(text1);
+    this.emails2 = emailTester.findEmailsInText(text2);
 
-    return emailDuplicateFinder.findDuplicatesEmails(emails1, emails2);
+    this.duplicatedEmails = emailTester.findDuplicatesEmails(
+      this.emails1,
+      this.emails2
+    );
+    this.uniquesEmails = emailTester.findUniqueEmails(
+      this.emails1,
+      this.emails2
+    );
   }
 }
 
 const csvAnalyser = new CSVAnalyser("./files");
-csvAnalyser.analyse().then((res) => console.log("emails en doubles", res));
+csvAnalyser
+  .analyse()
+  .then((res) => {
+    console.log("emails en doubles", csvAnalyser.duplicatedEmails);
+    console.log("emails uniques", csvAnalyser.uniquesEmails);
+  })
+  .catch((error) => console.log(error));
 
 export default CSVAnalyser;
