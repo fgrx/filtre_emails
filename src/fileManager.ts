@@ -12,6 +12,16 @@ class FileManager {
     const data = await fs.readFile(file, "utf8");
     return data;
   }
+
+  async writeResults(content: string) {
+    try {
+      const pathOutput = __dirname + "/../output/";
+      await fs.mkdir(pathOutput);
+      await fs.writeFile(pathOutput + "results.txt", content, { flag: "w+" });
+    } catch (e) {
+      console.error(e);
+    }
+  }
 }
 
 export default FileManager;
